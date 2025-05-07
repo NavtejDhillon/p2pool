@@ -22,6 +22,7 @@
 --in-peers N          Maximum number of incoming connections for p2p server (any value between 10 and 450)
 --start-mining N      Start built-in miner using N threads (any value between 1 and 64)
 --mini                Connect to p2pool-mini sidechain. Note that it will also change default p2p port from 37889 to 37888
+--nano                Connect to p2pool-nano sidechain. Note that it will also change default p2p port from 37889 to 37887
 --no-autodiff         Disable automatic difficulty adjustment for miners connected to stratum (WARNING: incompatible with Nicehash and MRR)
 --rpc-login           Specify username[:password] required for Monero RPC server
 --socks5              Specify IP:port of a SOCKS5 proxy to use for outgoing connections
@@ -77,40 +78,3 @@ Merge mining will be available in P2Pool after the fork on October 12th, 2024. V
 ```
 and on the Tari side
 ```
-./minotari_node --grpc-enabled --mining-enabled
-```
-TARI_NODE_IP is 127.0.0.1 if you run both on the same machine (recommended).
-
-Merge mining is available on Tari's mainnet:
-- Download [Tari suite](https://github.com/tari-project/tari/releases/latest) for your OS
-- Run Minotari node and wait until in synchronizes
-- Run Minotari console wallet to create a Tari wallet
-- Copy the interactive wallet address from the "Receive" tab of the wallet
-- Paste it into the P2Pool command line above
-- Everything is ready now to start merge mining Monero and Tari!
-
-Note that Tari will be mined in solo mode (only full Tari blocks can be mined for now). This doesn't affect P2Pool payouts - they will stay the same.
-
-### TLS
-
-Starting from v4.1, P2Pool supports SSL/TLS connections to its Stratum port. Port 443 can also be safely used for Stratum connections since v4.1 - P2Pool will detect HTTP requests and respond to them.
-
-All `--tls...` parameters are optional. If they are not provided, P2Pool will generate a self-signed certificate upon startup.
-
-If you want to use your own certificate, please refer to your certificate provider's documentation (or OpenSSL documentation) on how to generate the appropriate PEM files.
-
-Note that you need to use certificate files and `--tls...` parameters to be able to use certificate pinning in XMRig miners that connect to your P2Pool instance.
-
-`--tls-cert` and `--tls-cert-key` parameters must always be used together.
-
-### RPC-SSL
-
-Starting from v4.4, P2Pool supports RPC-SSL connections to Monero nodes. Add `--rpc-ssl` to P2Pool command line to enable it.
-
-P2Pool supports certificate pinning on RPC-SSL connections via `--rpc-ssl-fingerprint MONERO_NODE_FINGERPRINT_BASE64` parameter. To get your node certificate's fingerprint, run
-
-```
-openssl x509 -in rpc_ssl.crt -pubkey -noout -inform pem | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
-```
-
-By default, `rpc_ssl.crt` can be found in Monero data directory: `/home/username/.bitmonero/rpc_ssl.crt` on Linux and `C:\ProgramData\bitmonero\rpc_ssl.crt` on Windows.

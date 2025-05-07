@@ -57,6 +57,7 @@ namespace p2pool {
 
 static constexpr uint8_t default_consensus_id[HASH_SIZE] = { 34,175,126,231,181,11,104,146,227,153,218,107,44,108,68,39,178,81,4,212,169,4,142,0,177,110,157,240,68,7,249,24 };
 static constexpr uint8_t mini_consensus_id[HASH_SIZE] = { 57,130,201,26,149,174,199,250,66,80,189,18,108,216,194,220,136,23,63,24,64,113,221,44,219,86,39,163,53,24,126,196 };
+static constexpr uint8_t nano_consensus_id[HASH_SIZE] = { 89,45,231,172,123,45,208,179,43,92,217,165,71,124,97,112,203,47,85,173,92,14,198,33,210,147,59,138,217,86,153,101 };
 
 NetworkType SideChain::s_networkType = NetworkType::Invalid;
 
@@ -118,6 +119,7 @@ SideChain::SideChain(p2pool* pool, NetworkType type, const char* pool_name)
 
 	constexpr char default_config[] = "mainnet\0" "default\0" "\0" "10\0" "100000\0" "2160\0" "20\0";
 	constexpr char mini_config[] = "mainnet\0" "mini\0" "\0" "10\0" "100000\0" "2160\0" "20\0";
+	constexpr char nano_config[] = "mainnet\0" "nano\0" "\0" "10\0" "100000\0" "2160\0" "20\0";
 
 	// Hardcoded default consensus ID
 	if ((s.m_pos == sizeof(default_config) - 1) && (memcmp(buf, default_config, sizeof(default_config) - 1) == 0)) {
@@ -126,6 +128,10 @@ SideChain::SideChain(p2pool* pool, NetworkType type, const char* pool_name)
 	// Hardcoded mini consensus ID
 	else if ((s.m_pos == sizeof(mini_config) - 1) && (memcmp(buf, mini_config, sizeof(mini_config) - 1) == 0)) {
 		m_consensusId.assign(mini_consensus_id, mini_consensus_id + HASH_SIZE);
+	}
+	// Hardcoded nano consensus ID
+	else if ((s.m_pos == sizeof(nano_config) - 1) && (memcmp(buf, nano_config, sizeof(nano_config) - 1) == 0)) {
+		m_consensusId.assign(nano_consensus_id, nano_consensus_id + HASH_SIZE);
 	}
 	else {
 #ifdef WITH_RANDOMX
@@ -1183,6 +1189,11 @@ bool SideChain::is_default() const
 bool SideChain::is_mini() const
 {
 	return (memcmp(m_consensusId.data(), mini_consensus_id, HASH_SIZE) == 0);
+}
+
+bool SideChain::is_nano() const
+{
+	return (memcmp(m_consensusId.data(), nano_consensus_id, HASH_SIZE) == 0);
 }
 
 uint64_t SideChain::bottom_height(const PoolBlock* tip) const

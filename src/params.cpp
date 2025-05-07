@@ -153,6 +153,11 @@ Params::Params(int argc, char* const argv[])
 			ok = true;
 		}
 
+		if (strcmp(argv[i], "--nano") == 0) {
+			m_nano = true;
+			ok = true;
+		}
+
 		if (strcmp(argv[i], "--no-autodiff") == 0) {
 			m_autoDiff = false;
 			ok = true;

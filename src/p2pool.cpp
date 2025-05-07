@@ -163,10 +163,25 @@ p2pool::p2pool(int argc, char* argv[])
 		throw std::exception();
 	}
 
-	m_sideChain = new SideChain(this, type, p->m_mini ? "mini" : nullptr);
+	const char* pool_name = nullptr;
+	if (p->m_mini) {
+		pool_name = "mini";
+	}
+	else if (p->m_nano) {
+		pool_name = "nano";
+	}
+
+	m_sideChain = new SideChain(this, type, pool_name);
 
 	if (p->m_p2pAddresses.empty()) {
-		const int p2p_port = m_sideChain->is_mini() ? DEFAULT_P2P_PORT_MINI : DEFAULT_P2P_PORT;
+		int p2p_port = DEFAULT_P2P_PORT;
+		
+		if (m_sideChain->is_mini()) {
+			p2p_port = DEFAULT_P2P_PORT_MINI;
+		}
+		else if (m_sideChain->is_nano()) {
+			p2p_port = DEFAULT_P2P_PORT_NANO;
+		}
 
 		char buf[48] = {};
 		log::Stream s(buf);
