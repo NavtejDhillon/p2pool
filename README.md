@@ -1,3 +1,32 @@
+## Nano Chain Implementation
+
+A fork of P2Pool with nano chain support is maintained at [NavtejDhillon/p2pool](https://github.com/NavtejDhillon/p2pool.git). The nano chain offers another option alongside the default and mini chains, providing:
+
+- Even more frequent payouts than mini chain
+- Suitable for lower hashrate miners
+- Uses port 37887 by default
+
+### Using the Nano Chain
+
+1. Clone the fork:
+   ```
+   git clone --recursive https://github.com/NavtejDhillon/p2pool.git
+   ```
+
+2. Build following the standard [build instructions](#build-instructions)
+
+3. Run with the `--nano --addpeers kiwimining.xyz:37887` parameter:
+   ```
+   ./p2pool --wallet YOUR_WALLET_ADDRESS --nano --addpeers kiwimining.xyz:37887
+   ```
+
+4. Connect your miner as usual:
+   ```
+   ./xmrig -o 127.0.0.1:3333
+   ```
+
+
+
 # Monero P2Pool
 
 Decentralized pool for Monero mining.
